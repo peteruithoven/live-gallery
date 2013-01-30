@@ -50,8 +50,10 @@ function loadLatestImages() {
 				}
 			}
 			
-			$("#flash").append('<div></div>')
-			
+			// flash sound
+			playSound();
+			// flash effect
+			$("#flash").append('<div></div>');
 			$('#flash div').animate({
 		    opacity: 0
 		  	}, 400, function() {
@@ -83,4 +85,8 @@ function getConstrainedSize(width,height,maxWidth,maxHeight) {
 	}
 	return [width,height];
 }
-
+function playSound() {
+  soundHandle = document.getElementById('sound');
+  soundHandle.src = 'flash.wav';
+  soundHandle.play();
+}
