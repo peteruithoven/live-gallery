@@ -11,43 +11,32 @@ function loadLatestImages() {
 		var items = data.channel.item;
   	var firstImage = items[0];
 	  var link = firstImage.link;
-	  if(link != prevLink)
-	  {
+	  if(link != prevLink) {
 		  prevLink = link;
 		  
 		  $("#latest").empty();
 			$("#images").empty();
 			
-		  var mediaItems = firstImage.group.content;
-		  for (i in mediaItems) {
-		  	var mediaItem = mediaItems[i]['@attributes'];
-		  	if(mediaItem.isDefault) {
-		  		var mediaSrc = mediaItem.url;
-		  		var firstSize = getConstrainedSize(	mediaItem.width,
+			var mediaItem = getMediaItem(firstImage,false);
+			
+		  var mediaSrc = mediaItem.url;
+		  var firstSize = getConstrainedSize(	mediaItem.width,
 		  																				mediaItem.height,
 		  																				$(document).width()*maxWidthBigImage,
-		  																				$(document).height());
-		  																			
-		  		$("#latest").append("<div class='image'><a target='_blank' href='" + link +"'><img src='" + mediaSrc +"' width='" + firstSize[0] + "' height='" + firstSize[1] + "'/></a></div>");
-		  	}	
-		  }
+		  																				$(document).height());		  																			
+  		$("#latest").append("<div class='image'><a target='_blank' href='" + link +"'><img src='" + mediaSrc +"' width='" + firstSize[0] + "' height='" + firstSize[1] + "'/></a></div>");
 		  
 		  var numImages = Math.min(items.length,numSideImages+1);
 		  for (var i = 1; i < numImages; i++) {
 		  	var item = items[i];
 				var link = item.link;
-				var mediaItems = item.group.content;
-			  for (j in mediaItems) {
-			  	var mediaItem = mediaItems[j]['@attributes'];
-			  	if(!mediaItem.isDefault) {
-		  			var mediaSrc = mediaItem.url;
-		  			var size = getConstrainedSize(	mediaItem.width,
-				  																	mediaItem.height,
-				  																	$(document).width()-firstSize[0],
-				  																	firstSize[1]/numSideImages);
-						$("#images").append("<div class='image'><a target='_blank' href='" + link +"'><img src='" + mediaSrc +"' width='" + size[0] + "' height='" + size[1] + "' /></a></div>");   
-					}
-				}
+				var mediaItem = getMediaItem(item,false);
+			  var mediaSrc = mediaItem.url;
+		  	var size = getConstrainedSize(	mediaItem.width,
+																				mediaItem.height,
+																				$(document).width()-firstSize[0],
+																				firstSize[1]/numSideImages);
+				$("#images").append("<div class='image'><a target='_blank' href='" + link +"'><img src='" + mediaSrc +"' width='" + size[0] + "' height='" + size[1] + "' /></a></div>");
 			}
 			
 			// flash sound
@@ -62,6 +51,25 @@ function loadLatestImages() {
 		}
 	});
 	setTimeout(loadLatestImages,reloadTime*1000);
+}
+function getMediaItem(imageData,fullSize) {
+  var mediaItem;
+	var mediaItems = imageData.group.content;
+	for (var i in mediaItems) {
+    var item = mediaItems[i]['@attributes'];
+  	if(fullSize && item.isDefault) { 
+  		mediaItem = item;
+  	} else if(!fullSize && !item.isDefault) { 
+  		mediaItem = item;
+  	}
+  }
+  
+  if(!mediaItem.width && !fullSize) { // sometimes the width and height isn't set
+		var fullMediaItem = getMediaItem(firstImage,true);
+	  mediaItem.width = fullMediaItem.width;
+	  mediaItem.height = fullMediaItem.height;
+	}
+	return mediaItem;
 }
 function getConstrainedSize(width,height,maxWidth,maxHeight) {
 	var ratio = 0;  // Used for aspect ratio

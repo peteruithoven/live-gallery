@@ -39,6 +39,7 @@ footer {
 footer .big{
 	font-size: 2em;
 	color: #217EDD;
+	text-shadow: 0.5px 0.5px 1px black;
 }
 footer small {
 	font-size: 0.7em;
