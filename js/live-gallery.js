@@ -1,10 +1,16 @@
 var maxWidthBigImage = 0.75; // max percentage of screen width
 var prevLink = '';
 var numSideImages = 3;
-var reloadTime = 5; //seconds
+var reloadTime = 2; //seconds
+var supportsHTML5 = false;
 
 $(function() {
   loadLatestImages();
+  $(document).click(loadLatestImages);
+  
+	// a little html5 audio support check. 
+	// used to disable big flash effect on Raspberry Pi's Midori browser
+  supportsHTML5 = !!(document.createElement('audio').canPlayType);
 });
 function loadLatestImages() {
 	$.getJSON('rss.php',function(data){
@@ -37,20 +43,32 @@ function loadLatestImages() {
 																				$(document).width()-firstSize[0],
 																				firstSize[1]/numSideImages);
 				$("#images").append("<div class='image'><a target='_blank' href='" + link +"'><img src='" + mediaSrc +"' width='" + size[0] + "' height='" + size[1] + "' /></a></div>");
+				
+				
 			}
-			
-			// flash sound
-			playSound();
-			// flash effect
-			$("#flash").append('<div></div>');
-			$('#flash div').animate({
-		    opacity: 0
-		  	}, 400, function() {
-		  		$('#flash').empty();
-		  	});
+			flash();
 		}
 	});
 	setTimeout(loadLatestImages,reloadTime*1000);
+}
+function flash() {
+	// flash sound
+	playSound();
+	// flash effect
+	$("#flash").append('<div></div>');
+	
+	setTimeout(hideFlash,100);
+}
+function hideFlash() {
+  if(supportsHTML5) {
+		$('#flash div').animate({
+	    opacity: 0
+	  	}, 500, function() {
+	  		$('#flash').empty();
+	  	});
+  } else {
+  	$('#flash').empty();
+  }
 }
 function getMediaItem(imageData,fullSize) {
   var mediaItem;
@@ -65,7 +83,7 @@ function getMediaItem(imageData,fullSize) {
   }
   
   if(!mediaItem.width && !fullSize) { // sometimes the width and height isn't set
-		var fullMediaItem = getMediaItem(firstImage,true);
+		var fullMediaItem = getMediaItem(imageData,true);
 	  mediaItem.width = fullMediaItem.width;
 	  mediaItem.height = fullMediaItem.height;
 	}
@@ -96,5 +114,5 @@ function getConstrainedSize(width,height,maxWidth,maxHeight) {
 function playSound() {
   soundHandle = document.getElementById('sound');
   soundHandle.src = 'flash.wav';
-  soundHandle.play();
+  if(soundHandle.play) { soundHandle.play() };
 }
