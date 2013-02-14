@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=no;"/>
+	<meta charset="UTF-8"> 
+	<link type="text/css" rel="stylesheet" href="css/normalize.css" media="all" />
+  <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+  <script>
+  $(function() {
+  	effect();
+	});
+	function effect() {
+  	$('#block').animate({
+		    opacity: 0
+		  	}, 500, function() {
+		  		$('#block').css('opacity',100);
+		  	});
+		setTimeout(effect,1000);
+	}
+  </script>
+  <style>
+  	#block {
+  		width: 100%;
+  		height: 100%;
+  		position: absolute;
+  		top: 0;
+  		left: 0;
+  		background: blue;
+  	}
+  </style>
+	<title>Effect</title>
+</head>
+<body>
+  <div id="block"></div>
+</html>
