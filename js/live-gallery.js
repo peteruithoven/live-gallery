@@ -11,7 +11,9 @@ function LiveGallery(simple, newImagesCallback) {
 	
 	this.init = function() {
 		this.loadLatestImages();
-	  $(document).click(this.loadLatestImages);
+		
+		var self = this;
+	  $(document).click(function() { self.loadLatestImages });
 	}
 	this.loadLatestImages = function() {
 		var self = this;
@@ -53,17 +55,17 @@ function LiveGallery(simple, newImagesCallback) {
 																	"<img src='" + item.image +"' width='" + size[0] + "' height='" + size[1] + "' />"+
 																"</a></div>");
 					}
-					self.flash();
+					/*self.flash();*/
 				}
 				self.reloadDelay = setTimeout(function() { self.loadLatestImages() },self.reloadTime*1000);
 			},
 			error: function(jqXHR, status, errorThrown){   //the status returned will be "timeout" 
-   			console.log("livegallery reload error. Status: ",status,' errorThrown: ',errorThrown);
-   			/*switch(status) {
+   			//if(console) console.log("livegallery reload error. Status: ",status,' errorThrown: ',errorThrown);
+   			switch(status) {
    				case 'timeout':
+	   				self.loadLatestImages(); 
    					break;
-   			}*/
-   			self.loadLatestImages(); 
+   			} 			
 			} 
 		});
 	}

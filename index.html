@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-	<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=no;"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 	<meta charset="UTF-8"> 
 	<link type="text/css" rel="stylesheet" href="css/normalize.css" media="all" />
 	<link type="text/css" rel="stylesheet" href="css/main.css" media="all" />
@@ -21,18 +21,18 @@
   	var liveGallery = new LiveGallery(simple,foundNewImages);
   	liveGallery.maxWidthBigImage 	= 0.75; // max percentage of screen width
 		liveGallery.numSideImages 		= 3;
-		liveGallery.reloadTime 				= 5; //seconds
+		liveGallery.reloadTime 				= (simple? 5 : 3); //seconds
 		
 		switch(vars.type) { 
 			case 'lastalbum':
 		  	var slideShow = new SlideShowLastAlbum(simple);
-		  	slideShow.slideInterval = 3; //seconds
+		  	slideShow.slideInterval = (simple? 5 : 3); //seconds
 				slideShow.reloadImagesDataInterval = 60; // seconds 
 	  		break;
 	  	case 'allrandom':
 	  	default:
 	  		var slideShow = new SlideShowRandom(simple);
-	  		slideShow.slideInterval = 3; //seconds
+	  		slideShow.slideInterval = (simple? 5 : 3); //seconds
 	  		break;
   	}
   	
@@ -60,6 +60,7 @@
 			By <a href="http://www.peteruithoven.nl" target="_blank">Peter Uithoven</a> @ <a href="http://www.dewar.nl" target="_blank">De War</a> (<a href="http://freedomdefined.org/Licenses/CC-BY" target="_blank">CC-BY</a>)
 		</small>
 	</footer>
+
 	<audio id="sound"></audio>
 </body>
 </html>

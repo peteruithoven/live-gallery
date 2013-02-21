@@ -43,12 +43,12 @@ function SlideShowLastAlbum(simple) {
 				self.reloadDelay = setTimeout(function() { self.loadImagesData() },self.reloadImagesDataInterval*1000);
 			},
 			error: function(jqXHR, status, errorThrown){   //the status returned will be "timeout" 
-	 			console.log("lastalbum reload error. Status: ",status,' errorThrown: ',errorThrown);
-	 			/*switch(status) {
+	 			//console.log("lastalbum reload error. Status: ",status,' errorThrown: ',errorThrown);
+	 			switch(status) {
 	 				case 'timeout':
+		 				self.loadImagesData(); 
 	 					break;
-	 			}*/
-	 			self.loadImagesData(); 
+	 			} 			
 			}
 		});
 	}

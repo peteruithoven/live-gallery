@@ -10,6 +10,7 @@ function SlideShowRandom(simple) {
 	this.simple = simple; //used to disable transitions on for example Raspberry Pi's
 	this.nextDelay; 
 	this.enabled = true;
+	this.slideshowImg;
 	
 	this.enable = function() {
 		this.enabled = true;
@@ -40,12 +41,12 @@ function SlideShowRandom(simple) {
 				}
 			},
 			error: function(jqXHR, status, errorThrown){   //the status returned will be "timeout" 
-   			console.log("random load image data error. status: ",status);
-   			/*switch(status) {
+   			//console.log("random load image data error. status: ",status);
+   			switch(status) {
    				case 'timeout':
+	   				self.loadImagesData(); 
    					break;
-   			}*/
-   			self.loadImagesData(); 
+   			}
 			} 
 		});
 	}
@@ -67,13 +68,14 @@ function SlideShowRandom(simple) {
 		}
 	}
 	this.displayImage = function(imageData) {
+		var src = (this.simple)? imageData.image : imageData.big;
 		var size = Utils.getConstrainedSize(	imageData.width,
 																					imageData.height,
 																					$(window).width(),
 																					$(window).height());	
 		
 		var image = $("<div class='image'><a target='_blank' href='" + imageData.link +"'>"+
-										"<img src='" + imageData.big +"' width='" + size[0] + "' height='" + size[1] + "'/>"+
+										"<img src='" + src +"' width='" + size[0] + "' height='" + size[1] + "'/>"+
 									"</a></div>");
 		
 		// when the new image is loaded we add the new and slowly hide the old
@@ -91,6 +93,5 @@ function SlideShowRandom(simple) {
 			}
 			$("#slideshow").prepend(image);
 		});
-		
-	}
+	}	
 }
