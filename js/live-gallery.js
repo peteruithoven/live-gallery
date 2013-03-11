@@ -55,7 +55,7 @@ function LiveGallery(simple, newImagesCallback) {
 																	"<img src='" + item.image +"' width='" + size[0] + "' height='" + size[1] + "' />"+
 																"</a></div>");
 					}
-					/*self.flash();*/
+					self.flash();
 				}
 				self.reloadDelay = setTimeout(function() { self.loadLatestImages() },self.reloadTime*1000);
 			},
